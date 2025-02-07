@@ -2,6 +2,10 @@ import os
 from tqdm import tqdm
 import xml.etree.ElementTree as ET
 
+PATH = './path/to/analyze'
+
+
+
 def tree_traversal(ptr_base, ptr_node):
 	ptr_base['attribs'] = list(set(ptr_base['attribs'] + list(ptr_node.attrib.keys())))
 	child_tags = [c.tag for c in ptr_node]
@@ -30,7 +34,7 @@ def tree_out(tab, base_node):
 
 
 
-PATH = './path/to/analyze'
+
 target_files = [f'{PATH}/{x}' for x in os.listdir(PATH) if x.endswith('.xml')]
 # target_files = target_files[:2]
 res = {}

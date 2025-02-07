@@ -21,6 +21,7 @@ def tree_traversal(ptr_base, ptr_node):
 			ptr_base['children'][chld.tag]['max_cnt'] = ptr_base['children'][chld.tag]['cnt']
 		if chld.text.strip() == '':
 			ptr_base['children'][chld.tag]['has_no_text'] = True
+		else:
 			ptr_base['children'][chld.tag]['has_text'] = True
 		tree_traversal(ptr_base['children'][chld.tag], chld)
 
@@ -37,7 +38,8 @@ def tree_out(tab, base_node):
 		t_mc = base_node['children'][ct]['max_cnt']
 		t_ht = base_node['children'][ct]['has_text']
 		t_nt = base_node['children'][ct]['has_no_text']
-		print(f'{"\t"*tab}{ct} (n:{t_mc}, has_text: {t_ht}, has_no_text: {t_nt})')
+		t_st = 't' if t_ht else 'nt' if t_ht + t_nt == 1 else 'n' if t_ht == False and t_nt == False else 'tnt'
+		print(f'{"\t"*tab}{ct} {t_mc}.{t_st}')
 		for attr in base_node['children'][ct]['attribs']:
 			print(f'+{attr}')
 		print()

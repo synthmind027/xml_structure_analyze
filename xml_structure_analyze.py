@@ -12,13 +12,16 @@ def tree_traversal(ptr_base, ptr_node):
 	ptr_base['child_tags'] = list(set(ptr_base['child_tags'] + child_tags))
 	for tag in ptr_base['child_tags']:
 		if tag not in ptr_base['children']:
-			ptr_base['children'][tag] = {'attribs':[], 'child_tags':[], 'children': {}, 'cnt':0, 'max_cnt':0}
+			ptr_base['children'][tag] = {'attribs':[], 'child_tags':[], 'children': {}, 'cnt':0, 'max_cnt':0, 'has_text': False, 'has_no_text': False}
 		ptr_base['children'][tag]['cnt'] = 0
 
 	for chld in ptr_node:
 		ptr_base['children'][chld.tag]['cnt'] += 1
 		if ptr_base['children'][chld.tag]['max_cnt'] < ptr_base['children'][chld.tag]['cnt']:
 			ptr_base['children'][chld.tag]['max_cnt'] = ptr_base['children'][chld.tag]['cnt']
+		if chld.text.strip() == '':
+			ptr_base['children'][chld.tag]['has_no_text'] = True
+			ptr_base['children'][chld.tag]['has_text'] = True
 		tree_traversal(ptr_base['children'][chld.tag], chld)
 
 def tree_structure(base, path):
@@ -31,7 +34,10 @@ def tree_structure(base, path):
 
 def tree_out(tab, base_node):
 	for ct in base_node['child_tags']:
-		print(f'{"\t"*tab}{ct}:{base_node['children'][ct]['max_cnt']}')
+		t_mc = base_node['children'][ct]['max_cnt']
+		t_ht = base_node['children'][ct]['has_text']
+		t_nt = base_node['children'][ct]['has_no_text']
+		print(f'{"\t"*tab}{ct} (n:{t_mc}, has_text: {t_ht}, has_no_text: {t_nt})')
 		for attr in base_node['children'][ct]['attribs']:
 			print(f'+{attr}')
 		print()
